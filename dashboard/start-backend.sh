@@ -11,7 +11,8 @@ if lsof -ti:8000 > /dev/null 2>&1; then
     PID=$(lsof -ti:8000 | head -1)
     echo "⚠️  Porta 8000 já está em uso pelo processo $PID"
     echo ""
-    read "?Deseja matar o processo e continuar? (y/N) " -n 1 -r
+    echo -n "Deseja matar o processo e continuar? (y/N) "
+    read -r REPLY
     echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         kill -9 $PID 2>/dev/null || true

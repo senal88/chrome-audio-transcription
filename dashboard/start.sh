@@ -16,7 +16,8 @@ if lsof -ti:8000 > /dev/null 2>&1; then
     echo "   Processo usando a porta:"
     lsof -ti:8000 | xargs ps -p
     echo ""
-    read "?Deseja matar o processo e continuar? (y/N) " -n 1 -r
+    echo -n "Deseja matar o processo e continuar? (y/N) "
+    read -r REPLY
     echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         lsof -ti:8000 | xargs kill -9 2>/dev/null || true
