@@ -6,12 +6,19 @@
 audio/raw/*.mp3
 audio/raw/*.wav
 audio/raw/*.mov
+audio/raw/*.m4a
+audio/raw/*.mp4
+audio/raw/*.png
+audio/raw/*.jpg
+audio/raw/*.jpeg
 audio/processed/*
 
 # Transcripts (generated)
 transcripts/**/*.txt
 transcripts/**/*.srt
 transcripts/**/*.vtt
+transcripts/**/*.json
+transcripts/**/*.tsv
 
 # Logs and temp
 logs/*
