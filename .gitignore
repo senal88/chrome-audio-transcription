@@ -38,3 +38,4 @@ venv/
 
 # Whisper cache
 tmp/whisper_cache/*
+dashboard/transcribehub-dashboard.zip
