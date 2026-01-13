@@ -8,18 +8,35 @@ cd "$SCRIPT_DIR"
 
 # Verificar se porta 8000 está em uso
 if lsof -ti:8000 > /dev/null 2>&1; then
-    PID=$(lsof -ti:8000 | head -1)
-    echo "⚠️  Porta 8000 já está em uso pelo processo $PID"
+    PIDS=$(lsof -ti:8000)
+    PID_COUNT=$(echo "$PIDS" | wc -l | tr -d ' ')
+    echo "⚠️  Porta 8000 já está em uso por $PID_COUNT processo(s):"
+    echo "$PIDS" | xargs ps -p 2>/dev/null | grep -v PID || echo "   PIDs: $PIDS"
     echo ""
-    echo -n "Deseja matar o processo e continuar? (y/N) "
+    echo -n "Deseja matar todos os processos e continuar? (y/N) "
     read -r REPLY
     echo ""
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        kill -9 $PID 2>/dev/null || true
-        echo "✓ Processo finalizado"
-        sleep 1
+        echo "$PIDS" | xargs kill -9 2>/dev/null || true
+        echo "✓ Processos finalizados"
+        # Aguardar liberação da porta
+        sleep 2
+        # Verificar novamente
+        if lsof -ti:8000 > /dev/null 2>&1; then
+            echo "⚠️  Porta ainda em uso, tentando novamente..."
+            sleep 1
+            lsof -ti:8000 | xargs kill -9 2>/dev/null || true
+            sleep 1
+        fi
+        if lsof -ti:8000 > /dev/null 2>&1; then
+            echo "❌ Não foi possível liberar a porta 8000"
+            echo "   Execute manualmente: kill -9 \$(lsof -ti:8000)"
+            exit 1
+        fi
+        echo "✓ Porta 8000 liberada"
     else
-        echo "❌ Abortado. Libere a porta 8000 manualmente."
+        echo "❌ Abortado. Libere a porta 8000 manualmente:"
+        echo "   kill -9 \$(lsof -ti:8000)"
         exit 1
     fi
 fi
