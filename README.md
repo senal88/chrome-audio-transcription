@@ -93,3 +93,4 @@ Editar `.env` para personalizar:
 ## Licença
 
 MIT
+# chrome-audio-transcription
