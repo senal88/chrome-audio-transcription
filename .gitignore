@@ -1,0 +1,33 @@
+# Environment
+.env
+.env.local
+
+# Audio files (large)
+audio/raw/*.mp3
+audio/raw/*.wav
+audio/raw/*.mov
+audio/processed/*
+
+# Transcripts (generated)
+transcripts/**/*.txt
+transcripts/**/*.srt
+transcripts/**/*.vtt
+
+# Logs and temp
+logs/*
+tmp/*
+!logs/.gitkeep
+!tmp/.gitkeep
+
+# macOS
+.DS_Store
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Whisper cache
+tmp/whisper_cache/*

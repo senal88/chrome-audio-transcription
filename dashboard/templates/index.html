@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chrome Audio Dashboard</title>
+    <style>
+      :root {
+        --bg-primary: #0f0f0f;
+        --bg-secondary: #1a1a1a;
+        --bg-card: #242424;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --accent: #6366f1;
+        --accent-hover: #818cf8;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --border: #333333;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--accent), #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem;
+      }
+
+      .stat-card .label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-card .value {
+        font-size: 1.75rem;
+        font-weight: 700;
+      }
+
+      .stat-card.success .value {
+        color: var(--success);
+      }
+      .stat-card.warning .value {
+        color: var(--warning);
+      }
+      .stat-card.accent .value {
+        color: var(--accent);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--bg-card);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+
+      th {
+        background: var(--bg-secondary);
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+      }
+
+      tr:hover {
+        background: rgba(99, 102, 241, 0.05);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .status.success {
+        background: rgba(34, 197, 94, 0.15);
+        color: var(--success);
+      }
+      .status.pending {
+        background: rgba(245, 158, 11, 0.15);
+        color: var(--warning);
+      }
+
+      .formats {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .format-badge {
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .format-badge.txt {
+        background: #1e3a5f;
+        color: #60a5fa;
+      }
+      .format-badge.srt {
+        background: #3b2f4a;
+        color: #c084fc;
+      }
+      .format-badge.vtt {
+        background: #2d3b2d;
+        color: #86efac;
+      }
+      .format-badge.disabled {
+        background: var(--bg-secondary);
+        color: var(--text-secondary);
+        opacity: 0.5;
+      }
+
+      .file-name {
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .file-ext {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+      }
+
+      .size {
+        color: var(--text-secondary);
+        font-variant-numeric: tabular-nums;
+      }
+      .date {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .refresh-btn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .refresh-btn:hover {
+        background: var(--accent-hover);
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+      }
+
+      .path-info {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        font-family: 'SF Mono', 'Menlo', monospace;
+      }
+
+      @media (max-width: 768px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .container {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div>
+          <h1>🎙️ Chrome Audio Dashboard</h1>
+          <p class="path-info">{{ project_root }}</p>
+        </div>
+        <button class="refresh-btn" onclick="location.reload()">⟳ Atualizar</button>
+      </header>
+
+      <div class="stats">
+        <div class="stat-card accent">
+          <div class="label">Total de Arquivos</div>
+          <div class="value">{{ stats.total }}</div>
+        </div>
+        <div class="stat-card success">
+          <div class="label">Transcritos</div>
+          <div class="value">{{ stats.transcribed }}</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="label">Pendentes</div>
+          <div class="value">{{ stats.pending }}</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Tamanho Total</div>
+          <div class="value">{{ stats.total_size_mb }} MB</div>
+        </div>
+      </div>
+
+      {% if rows %}
+      <table>
+        <thead>
+          <tr>
+            <th>Arquivo</th>
+            <th>Tamanho</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Formatos</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            <td>
+              <span class="file-name">{{ row.name }}</span>
+              <span class="file-ext">{{ row.extension }}</span>
+            </td>
+            <td class="size">{{ row.size_mb }} MB</td>
+            <td class="date">{{ row.created.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td><span class="status {{ row.status_class }}">{{ row.status }}</span></td>
+            <td>
+              <div class="formats">
+                <span class="format-badge txt {% if not row.has_txt %}disabled{% endif %}"
+                  >TXT</span
+                >
+                <span class="format-badge srt {% if not row.has_srt %}disabled{% endif %}"
+                  >SRT</span
+                >
+                <span class="format-badge vtt {% if not row.has_vtt %}disabled{% endif %}"
+                  >VTT</span
+                >
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <p>Nenhum arquivo de áudio encontrado.</p>
+        <p style="margin-top: 0.5rem">Adicione arquivos em <code>audio/raw/</code></p>
+      </div>
+      {% endif %}
+    </div>
+
+    <script>
+      // Auto-refresh a cada 30 segundos
+      setTimeout(() => location.reload(), 30000)
+    </script>
+  </body>
+</html>
