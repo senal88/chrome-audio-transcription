@@ -27,7 +27,7 @@ fi
 # Verificar dependências
 if ! python3 -c "import fastapi" 2>/dev/null; then
     echo "📦 Instalando dependências..."
-    pip install -r requirements.txt
+    python3 -m pip install -q -r requirements.txt
 fi
 
 echo "🚀 Iniciando backend FastAPI..."

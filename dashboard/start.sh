@@ -33,7 +33,7 @@ fi
 if ! python3 -c "import fastapi" 2>/dev/null; then
     echo "📦 Instalando dependências do backend..."
     cd "$DASHBOARD_DIR"
-    pip install -r requirements.txt
+    python3 -m pip install -q -r requirements.txt
 fi
 
 # Verificar dependências do frontend
