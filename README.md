@@ -147,7 +147,23 @@ VITE_API_URL=http://localhost:8000
 
 ### Execução
 
-**Desenvolvimento:**
+**Opção 1: Scripts Helper (Recomendado)**
+
+```bash
+# Verificar dependências e obter instruções
+cd dashboard
+./start.sh
+
+# Ou iniciar diretamente:
+# Terminal 1 - Backend
+./start-backend.sh
+
+# Terminal 2 - Frontend  
+cd frontend
+./start-frontend.sh
+```
+
+**Opção 2: Manual**
 
 ```bash
 # Terminal 1 - Backend
@@ -157,6 +173,11 @@ python app.py
 # Terminal 2 - Frontend
 cd dashboard/frontend
 npm run dev
+```
+
+**Nota:** Se a porta 8000 estiver em uso, os scripts helper perguntarão se deseja finalizar o processo. Ou execute manualmente:
+```bash
+lsof -ti:8000 | xargs kill -9
 ```
 
 Acesse: **http://localhost:5173**
