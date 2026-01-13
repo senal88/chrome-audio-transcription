@@ -22,14 +22,14 @@ read -r REPLY
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "$PIDS" | xargs kill -9 2>/dev/null || true
     sleep 1
-    
+
     # Verificar novamente
     if lsof -ti:$PORT > /dev/null 2>&1; then
         echo "⚠️  Ainda há processos, tentando novamente..."
         lsof -ti:$PORT | xargs kill -9 2>/dev/null || true
         sleep 1
     fi
-    
+
     if lsof -ti:$PORT > /dev/null 2>&1; then
         echo "❌ Não foi possível liberar a porta $PORT"
         exit 1

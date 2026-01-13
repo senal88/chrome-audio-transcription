@@ -158,7 +158,7 @@ cd dashboard
 # Terminal 1 - Backend
 ./start-backend.sh
 
-# Terminal 2 - Frontend  
+# Terminal 2 - Frontend
 cd frontend
 ./start-frontend.sh
 ```
