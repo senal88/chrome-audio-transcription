@@ -57,7 +57,7 @@ cd dashboard/frontend
 npm run dev
 ```
 
-Acesse: http://localhost:3000
+Acesse: http://localhost:5173
 
 ### Produção
 

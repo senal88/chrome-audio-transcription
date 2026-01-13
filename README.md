@@ -159,7 +159,7 @@ cd dashboard/frontend
 npm run dev
 ```
 
-Acesse: **http://localhost:3000**
+Acesse: **http://localhost:5173**
 
 **Produção:**
 
@@ -180,7 +180,7 @@ Acesse: **http://localhost:8000**
 - 📚 **Biblioteca de Arquivos**: Visualize todos os áudios/vídeos gravados
 - 🎙️ **Gravação em Tempo Real**: Inicie/pare gravações diretamente da interface
 - 📝 **Visualização de Transcrições**: Veja transcrições completas com formatação
-- 🤖 **Análise com Gemini AI**: 
+- 🤖 **Análise com Gemini AI**:
   - Resumo automático
   - Pontos-chave destacados
   - Itens de ação extraídos
